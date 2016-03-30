@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *This class Inherited from class GTMatrix. It handles the PanCan GTMatrix 
+ * with Cancer Type at the last column in the input data file
  */
 
 /* 
@@ -42,9 +41,6 @@ GTCMatrix::GTCMatrix(string fileName)
 GTCMatrix::~GTCMatrix(){
    
 }
-
-
-
 
 
 /**

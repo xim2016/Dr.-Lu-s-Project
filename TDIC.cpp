@@ -119,7 +119,7 @@ void TDIC(GTMatrix& gtMatrix, TDIMatrix& geMatrix, map<string,
                 if(gtDataMatrix[gtRowStart + t] == 1)
                 {   
                     //T1++;
-                    arrT[1];
+                    arrT[1]++;
                     if(geDataMatrix[rowStartForGE + t] == 1) //
                     {
                         //T1ge1++;

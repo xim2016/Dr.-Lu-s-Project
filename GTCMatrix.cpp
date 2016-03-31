@@ -1,6 +1,7 @@
 /*
- * This class Inherited from class GTMatrix. It handles the PanCan GTMatrix 
- * with Cancer Type at the last column in the input data file
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
  */
 
 /* 
@@ -24,7 +25,7 @@ using namespace std;
 #include <string.h>
 #include <sstream>
 
-#include "PanCanGTMatrix.h"
+#include "GTCMatrix.h"
 
 
 GTCMatrix::GTCMatrix() {
@@ -94,32 +95,10 @@ void GTCMatrix::load(string fileName){
         nCol ++;
     }
 
-
+    //last column is cancel type not gene name, so popback, nCol minus 1
+    geneNames.pop_back();
+    nCol--;
     
-    //Check the last column to see if the column name something like 'Cancel Type'
-    // Cancel type column name can be 'Cancer Type' or 'Cancel Types' or 'Can Type' or 'Can Types' . 
-    //There can be no or more space between each word. Each character in the word is not case sensitive, can be lower or upper case.
-    
-    
-    
-    string colName;
-    colName = geneNames.back();
-    //Convert to lower case
-    transform(colName.begin(), colName.end(), colName.begin(), ::tolower);
-    //remove all spaces
-    colName.erase(remove(colName.begin(), colName.end(), ' '), colName.end());
-
-    if (colName == "cancertype" || colName == "cancertypes" || "cantype" || "cantypes")//correct column name
-    {
-        //last column is cancel type not gene name, so popback, nCol minus 1
-        geneNames.pop_back();
-        nCol--;
-    }
-    else//incorrect column name. 
-    {
-        cout << "Cancel Type column name is not correct. Please check PanCan GTMatrix input file";
-        exit(1);
-    }
     while (getline(inFileStream, line)){
         firstColFlag = true; 
 
@@ -173,22 +152,3 @@ void GTCMatrix::load(string fileName){
         delete[] matrixAsVec[i];
 }
 
-int GTCMatrix::getCanTypeByTumorId(int tumorId){
-    if (!canTypes.empty())
-        return(canTypes.at(tumorId));
-    else
-    {
-        cerr << "Cancer type vector is empty\n";
-        return -1;
-    }
-}
-int GTCMatrix::getCanTypeByTumorName(string tumorName){
-    for (int i = 0; i < tumorNames.size(); i++)
-    {
-        if (tumorNames.at(i).compare(tumorName) == 0)
-            return canTypes.at(i);
-    }
-    //if rumorName not found, then pop out the error message
-    cerr << "Tumor name is not found in getCanTypeByTumorName function";
-    return -1;
-}

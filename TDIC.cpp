@@ -1,16 +1,12 @@
-/*
- * This is the class encapsulates functions of complex computations
- */
-
 /* 
  * File:   TDIC.cpp
- * Author: XIM33
+ * Author: Kevin Lu
  * 
- * Created on March 29, 2016, 3:01 PM
+ * Created on April 25, 2015, 6:13 PM
  */
 
-#include "TDIC.h"
 
+#include "TDIC.h"
 #include "TDIMatrix.h"
 #include "GTMatrix.h"
 #include <fstream>
@@ -25,16 +21,6 @@
 #include <float.h>
 
 using namespace std;
-
-TDIC::TDIC() {
-}
-
-TDIC::TDIC(const TDIC& orig) {
-}
-
-TDIC::~TDIC() {
-}
-
 /**
  * This function performs tumor-specific driver identification.  It calculate the causal score for all 
  * GT-vs-GE pairs observed in a given tumor, populate a GT-by-GE score matrix and output to file.  
@@ -47,7 +33,7 @@ TDIC::~TDIC() {
                                 vector<string> containing the two 2 global driver.  
  * @param tumorID               The tumor to be process
  */
-void TDIC::fTDIC(GTMatrix& gtMatrix, TDIMatrix& geMatrix, map<string, 
+void TDIC(GTMatrix& gtMatrix, TDIMatrix& geMatrix, map<string, 
         string>& mapGlobDrivers, const int tumorID, const string outPath, const float v0){
     // initializations 
  
@@ -278,7 +264,7 @@ void TDIC::fTDIC(GTMatrix& gtMatrix, TDIMatrix& geMatrix, map<string,
  * @param A string fileName
  * @return A boolean value indicating the success  
  */
-bool TDIC::parseGlobDriverDict(string fileName, map<string, string>& globDriverMap){
+bool parseGlobDriverDict(string fileName, map<string, string>& globDriverMap){
     ifstream inFileStream;
     string line;
     vector<string> fields;
@@ -309,7 +295,7 @@ bool TDIC::parseGlobDriverDict(string fileName, map<string, string>& globDriverM
  * @param elems List containing each split substring of 's' split by 'delim'.
  * @return 
  */
-std::vector<std::string> & TDIC::split(const std::string &s, char delim, std::vector<std::string> &elems) {
+std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
     std::stringstream ss(s);
     std::string item;
     while (std::getline(ss, item, delim)) {
@@ -324,7 +310,7 @@ std::vector<std::string> & TDIC::split(const std::string &s, char delim, std::ve
  * @param delim Character delimiter to split the string 's'.
  * @return List of substrings resulting from the split.
  */
-std::vector<std::string> TDIC::split(const std::string &s, char delim) {
+std::vector<std::string> split(const std::string &s, char delim) {
     std::vector<std::string> elems;
     split(s, delim, elems);
     return elems;
@@ -341,7 +327,7 @@ std::vector<std::string> TDIC::split(const std::string &s, char delim) {
  * @return 
  */
 
-bool TDIC::getDEGGlobDriverIndices(GTMatrix& gtMat, TDIMatrix& geMat, map<string, string>& mapGlobDrivers, vector<int>& inDEGIndices, vector<int>& OutGlobDriverVec)
+bool getDEGGlobDriverIndices(GTMatrix& gtMat, TDIMatrix& geMat, map<string, string>& mapGlobDrivers, vector<int>& inDEGIndices, vector<int>& OutGlobDriverVec)
 {
     /*
      * First we must get the names of the DEGs corresponding to the indices in "inDEGIndices".
@@ -362,7 +348,7 @@ bool TDIC::getDEGGlobDriverIndices(GTMatrix& gtMat, TDIMatrix& geMat, map<string
     return true;
 }
 
-int TDIC::getGlobDriver4GE(map<string, string>& mapGlobDrivers, int geId)
+int getGlobDriver4GE(map<string, string>& mapGlobDrivers, int geId)
 {
     return 0;
 }
@@ -375,7 +361,7 @@ int TDIC::getGlobDriver4GE(map<string, string>& mapGlobDrivers, int geId)
  * @param lny ln(y)
  * @return ln(x + y)
  */
-float TDIC::logSum(float lnx, float lny){
+float logSum(float lnx, float lny){
     float maxExp = -4950.0;
 
     if(lny > lnx){                
@@ -407,7 +393,7 @@ float TDIC::logSum(float lnx, float lny){
  * @param gt0ge0
  * @return 
  */
-float TDIC::calcFscore(float gt1,  float gt1ge1, float gt1ge0, 
+float calcFscore(float gt1,  float gt1ge1, float gt1ge0, 
     float gt0, float gt0ge1, float gt0ge0 )
 {
     // Calculation of Equation 7    
@@ -435,7 +421,7 @@ float TDIC::calcFscore(float gt1,  float gt1ge1, float gt1ge0,
  * @param gt0ge0
  * @return 
  */
-float TDIC::calcA0Fscore(float gt1,  float gt1ge1, float gt1ge0, 
+float calcA0Fscore(float gt1,  float gt1ge1, float gt1ge0, 
     float gt0, float gt0ge1, float gt0ge0 )
 {
 
@@ -462,7 +448,7 @@ float TDIC::calcA0Fscore(float gt1,  float gt1ge1, float gt1ge0,
  * @param geIndx
  * @return 
  */
-float TDIC::calcFscoreMultGT(int* gtm, int* gem, const int nTumors,  const int* gtIndx, const unsigned int nGT, const int geIndx)
+float calcFscoreMultGT(int* gtm, int* gem, const int nTumors,  const int* gtIndx, const unsigned int nGT, const int geIndx)
 {
     int parentCombinationCounts[2 ^ nGT];
     int parentAndChildCombinationCounts[2 ^ (nGT + 1)];
@@ -503,6 +489,4 @@ float TDIC::calcFscoreMultGT(int* gtm, int* gem, const int nTumors,  const int* 
     
     return res;
 }
-
-
 

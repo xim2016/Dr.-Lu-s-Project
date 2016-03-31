@@ -8,7 +8,6 @@
 #include <fstream>
 #include <omp.h>
 #include "TDIC.h"
-#include "PanCanTDIC.h"
 #include "TDIMatrix.h"
 #include "GTMatrix.h"
 #include "PanCanGTMatrix.h"
@@ -113,17 +112,16 @@ int main(int argc, char** argv) {
     GTMatrix* gtMatrix = new GTMatrix(gtFilePath);
     
     
-    //read in PanCan GT matrices
+    //read in GTC matrices
     if (!gtcFilePath.empty())
     {
-        cout << "Reading PanCan GT matrix: " << gtcFilePath << "\n";
+        cout << "Reading GTC matrix: " << gtcFilePath << "\n";
         GTCMatrix* gtcMatrix = new GTCMatrix(gtcFilePath);
-        
     
-    //   test canType vector
-    /*     
-        save cancel type in canTypes.csv
-        
+        /*test canType vector
+        * 
+        * save cancel type in canTypes.csv
+        */
         
         if (*outPath.end()!= '/')
         {
@@ -150,7 +148,7 @@ int main(int argc, char** argv) {
         
         outFile.close();
         //test end 
-     */   
+        
         delete gtcMatrix;
     }
            
@@ -162,9 +160,8 @@ int main(int argc, char** argv) {
     TDIMatrix* geMatrix = new TDIMatrix(degFilePath);
    
     cout << "Reading global driver file.\n";
-    TDIC* tdic = new TDIC;
     map<string, string> globalDriverMap;
-    tdic->parseGlobDriverDict(globalDriverPath, globalDriverMap);
+    parseGlobDriverDict(globalDriverPath, globalDriverMap);
 
     
     int nTumors = gtMatrix->getNTumors();
@@ -190,12 +187,11 @@ int main(int argc, char** argv) {
     {
         if (i % 50 == 0)
             printf("TDIC processed %d tumors.\n", i);
-        tdic->fTDIC(*gtMatrix, *geMatrix, globalDriverMap, i, outPath, v0);
+        TDIC(*gtMatrix, *geMatrix, globalDriverMap, i, outPath, v0);
     }
     
     delete geMatrix;
     delete gtMatrix;  
-    delete tdic;
 
     return 0;
 }
